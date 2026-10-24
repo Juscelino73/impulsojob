@@ -10,33 +10,119 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorkspaceRouteImport } from './routes/_workspace'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as WorkspaceOnboardingRouteImport } from './routes/_workspace.onboarding'
+import { Route as WorkspaceProfileRouteImport } from './routes/_workspace.profile'
+import { Route as WorkspaceJobsIndexRouteImport } from './routes/_workspace.jobs.index'
+import { Route as WorkspaceJobsIdRouteImport } from './routes/_workspace.jobs.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkspaceRoute = WorkspaceRouteImport.update({
+  id: '/_workspace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkspaceOnboardingRoute = WorkspaceOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceProfileRoute = WorkspaceProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceJobsIndexRoute = WorkspaceJobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceJobsIdRoute = WorkspaceJobsIdRouteImport.update({
+  id: '/jobs/$id',
+  path: '/jobs/$id',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
+  '/onboarding': typeof WorkspaceOnboardingRoute
+  '/profile': typeof WorkspaceProfileRoute
+  '/jobs/$id': typeof WorkspaceJobsIdRoute
+  '/jobs/': typeof WorkspaceJobsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
+  '/onboarding': typeof WorkspaceOnboardingRoute
+  '/profile': typeof WorkspaceProfileRoute
+  '/jobs/$id': typeof WorkspaceJobsIdRoute
+  '/jobs': typeof WorkspaceJobsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_workspace': typeof WorkspaceRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
+  '/_workspace/onboarding': typeof WorkspaceOnboardingRoute
+  '/_workspace/profile': typeof WorkspaceProfileRoute
+  '/_workspace/jobs/$id': typeof WorkspaceJobsIdRoute
+  '/_workspace/jobs/': typeof WorkspaceJobsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/privacy'
+    | '/terms'
+    | '/onboarding'
+    | '/profile'
+    | '/jobs/$id'
+    | '/jobs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/privacy'
+    | '/terms'
+    | '/onboarding'
+    | '/profile'
+    | '/jobs/$id'
+    | '/jobs'
+  id:
+    | '__root__'
+    | '/'
+    | '/_workspace'
+    | '/privacy'
+    | '/terms'
+    | '/_workspace/onboarding'
+    | '/_workspace/profile'
+    | '/_workspace/jobs/$id'
+    | '/_workspace/jobs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  WorkspaceRoute: typeof WorkspaceRouteWithChildren
+  PrivacyRoute: typeof PrivacyRoute
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +134,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_workspace': {
+      id: '/_workspace'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof WorkspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_workspace/onboarding': {
+      id: '/_workspace/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof WorkspaceOnboardingRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/profile': {
+      id: '/_workspace/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof WorkspaceProfileRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/jobs/': {
+      id: '/_workspace/jobs/'
+      path: '/jobs'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof WorkspaceJobsIndexRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/jobs/$id': {
+      id: '/_workspace/jobs/$id'
+      path: '/jobs/$id'
+      fullPath: '/jobs/$id'
+      preLoaderRoute: typeof WorkspaceJobsIdRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
   }
 }
 
+interface WorkspaceRouteChildren {
+  WorkspaceOnboardingRoute: typeof WorkspaceOnboardingRoute
+  WorkspaceProfileRoute: typeof WorkspaceProfileRoute
+  WorkspaceJobsIdRoute: typeof WorkspaceJobsIdRoute
+  WorkspaceJobsIndexRoute: typeof WorkspaceJobsIndexRoute
+}
+
+const WorkspaceRouteChildren: WorkspaceRouteChildren = {
+  WorkspaceOnboardingRoute: WorkspaceOnboardingRoute,
+  WorkspaceProfileRoute: WorkspaceProfileRoute,
+  WorkspaceJobsIdRoute: WorkspaceJobsIdRoute,
+  WorkspaceJobsIndexRoute: WorkspaceJobsIndexRoute,
+}
+
+const WorkspaceRouteWithChildren = WorkspaceRoute._addFileChildren(
+  WorkspaceRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  WorkspaceRoute: WorkspaceRouteWithChildren,
+  PrivacyRoute: PrivacyRoute,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
