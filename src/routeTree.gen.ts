@@ -13,10 +13,16 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkspaceRouteImport } from './routes/_workspace'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as WorkspaceApplicationsRouteImport } from './routes/_workspace.applications'
+import { Route as WorkspaceDashboardRouteImport } from './routes/_workspace.dashboard'
+import { Route as WorkspaceMatchesRouteImport } from './routes/_workspace.matches'
 import { Route as WorkspaceOnboardingRouteImport } from './routes/_workspace.onboarding'
 import { Route as WorkspaceProfileRouteImport } from './routes/_workspace.profile'
+import { Route as WorkspaceSettingsRouteImport } from './routes/_workspace.settings'
 import { Route as WorkspaceJobsIndexRouteImport } from './routes/_workspace.jobs.index'
 import { Route as WorkspaceJobsIdRouteImport } from './routes/_workspace.jobs.$id'
+import { Route as WorkspaceResumeIndexRouteImport } from './routes/_workspace.resume.index'
+import { Route as WorkspaceResumeIdRouteImport } from './routes/_workspace.resume.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -37,6 +43,21 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkspaceApplicationsRoute = WorkspaceApplicationsRouteImport.update({
+  id: '/applications',
+  path: '/applications',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceDashboardRoute = WorkspaceDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceMatchesRoute = WorkspaceMatchesRouteImport.update({
+  id: '/matches',
+  path: '/matches',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
 const WorkspaceOnboardingRoute = WorkspaceOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
@@ -45,6 +66,11 @@ const WorkspaceOnboardingRoute = WorkspaceOnboardingRouteImport.update({
 const WorkspaceProfileRoute = WorkspaceProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceSettingsRoute = WorkspaceSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => WorkspaceRoute,
 } as any)
 const WorkspaceJobsIndexRoute = WorkspaceJobsIndexRouteImport.update({
@@ -57,24 +83,46 @@ const WorkspaceJobsIdRoute = WorkspaceJobsIdRouteImport.update({
   path: '/jobs/$id',
   getParentRoute: () => WorkspaceRoute,
 } as any)
+const WorkspaceResumeIndexRoute = WorkspaceResumeIndexRouteImport.update({
+  id: '/resume/',
+  path: '/resume/',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceResumeIdRoute = WorkspaceResumeIdRouteImport.update({
+  id: '/resume/$id',
+  path: '/resume/$id',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/applications': typeof WorkspaceApplicationsRoute
+  '/dashboard': typeof WorkspaceDashboardRoute
+  '/matches': typeof WorkspaceMatchesRoute
   '/onboarding': typeof WorkspaceOnboardingRoute
   '/profile': typeof WorkspaceProfileRoute
+  '/settings': typeof WorkspaceSettingsRoute
   '/jobs/$id': typeof WorkspaceJobsIdRoute
+  '/resume/$id': typeof WorkspaceResumeIdRoute
   '/jobs/': typeof WorkspaceJobsIndexRoute
+  '/resume/': typeof WorkspaceResumeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/applications': typeof WorkspaceApplicationsRoute
+  '/dashboard': typeof WorkspaceDashboardRoute
+  '/matches': typeof WorkspaceMatchesRoute
   '/onboarding': typeof WorkspaceOnboardingRoute
   '/profile': typeof WorkspaceProfileRoute
+  '/settings': typeof WorkspaceSettingsRoute
   '/jobs/$id': typeof WorkspaceJobsIdRoute
+  '/resume/$id': typeof WorkspaceResumeIdRoute
   '/jobs': typeof WorkspaceJobsIndexRoute
+  '/resume': typeof WorkspaceResumeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -82,10 +130,16 @@ export interface FileRoutesById {
   '/_workspace': typeof WorkspaceRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/_workspace/applications': typeof WorkspaceApplicationsRoute
+  '/_workspace/dashboard': typeof WorkspaceDashboardRoute
+  '/_workspace/matches': typeof WorkspaceMatchesRoute
   '/_workspace/onboarding': typeof WorkspaceOnboardingRoute
   '/_workspace/profile': typeof WorkspaceProfileRoute
+  '/_workspace/settings': typeof WorkspaceSettingsRoute
   '/_workspace/jobs/$id': typeof WorkspaceJobsIdRoute
+  '/_workspace/resume/$id': typeof WorkspaceResumeIdRoute
   '/_workspace/jobs/': typeof WorkspaceJobsIndexRoute
+  '/_workspace/resume/': typeof WorkspaceResumeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -93,29 +147,47 @@ export interface FileRouteTypes {
     | '/'
     | '/privacy'
     | '/terms'
+    | '/applications'
+    | '/dashboard'
+    | '/matches'
     | '/onboarding'
     | '/profile'
+    | '/settings'
     | '/jobs/$id'
+    | '/resume/$id'
     | '/jobs/'
+    | '/resume/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/privacy'
     | '/terms'
+    | '/applications'
+    | '/dashboard'
+    | '/matches'
     | '/onboarding'
     | '/profile'
+    | '/settings'
     | '/jobs/$id'
+    | '/resume/$id'
     | '/jobs'
+    | '/resume'
   id:
     | '__root__'
     | '/'
     | '/_workspace'
     | '/privacy'
     | '/terms'
+    | '/_workspace/applications'
+    | '/_workspace/dashboard'
+    | '/_workspace/matches'
     | '/_workspace/onboarding'
     | '/_workspace/profile'
+    | '/_workspace/settings'
     | '/_workspace/jobs/$id'
+    | '/_workspace/resume/$id'
     | '/_workspace/jobs/'
+    | '/_workspace/resume/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -155,6 +227,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_workspace/applications': {
+      id: '/_workspace/applications'
+      path: '/applications'
+      fullPath: '/applications'
+      preLoaderRoute: typeof WorkspaceApplicationsRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/dashboard': {
+      id: '/_workspace/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof WorkspaceDashboardRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/matches': {
+      id: '/_workspace/matches'
+      path: '/matches'
+      fullPath: '/matches'
+      preLoaderRoute: typeof WorkspaceMatchesRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
     '/_workspace/onboarding': {
       id: '/_workspace/onboarding'
       path: '/onboarding'
@@ -167,6 +260,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof WorkspaceProfileRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/settings': {
+      id: '/_workspace/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof WorkspaceSettingsRouteImport
       parentRoute: typeof WorkspaceRoute
     }
     '/_workspace/jobs/': {
@@ -183,21 +283,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkspaceJobsIdRouteImport
       parentRoute: typeof WorkspaceRoute
     }
+    '/_workspace/resume/': {
+      id: '/_workspace/resume/'
+      path: '/resume'
+      fullPath: '/resume/'
+      preLoaderRoute: typeof WorkspaceResumeIndexRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/resume/$id': {
+      id: '/_workspace/resume/$id'
+      path: '/resume/$id'
+      fullPath: '/resume/$id'
+      preLoaderRoute: typeof WorkspaceResumeIdRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
   }
 }
 
 interface WorkspaceRouteChildren {
+  WorkspaceApplicationsRoute: typeof WorkspaceApplicationsRoute
+  WorkspaceDashboardRoute: typeof WorkspaceDashboardRoute
+  WorkspaceMatchesRoute: typeof WorkspaceMatchesRoute
   WorkspaceOnboardingRoute: typeof WorkspaceOnboardingRoute
   WorkspaceProfileRoute: typeof WorkspaceProfileRoute
+  WorkspaceSettingsRoute: typeof WorkspaceSettingsRoute
   WorkspaceJobsIdRoute: typeof WorkspaceJobsIdRoute
+  WorkspaceResumeIdRoute: typeof WorkspaceResumeIdRoute
   WorkspaceJobsIndexRoute: typeof WorkspaceJobsIndexRoute
+  WorkspaceResumeIndexRoute: typeof WorkspaceResumeIndexRoute
 }
 
 const WorkspaceRouteChildren: WorkspaceRouteChildren = {
+  WorkspaceApplicationsRoute: WorkspaceApplicationsRoute,
+  WorkspaceDashboardRoute: WorkspaceDashboardRoute,
+  WorkspaceMatchesRoute: WorkspaceMatchesRoute,
   WorkspaceOnboardingRoute: WorkspaceOnboardingRoute,
   WorkspaceProfileRoute: WorkspaceProfileRoute,
+  WorkspaceSettingsRoute: WorkspaceSettingsRoute,
   WorkspaceJobsIdRoute: WorkspaceJobsIdRoute,
+  WorkspaceResumeIdRoute: WorkspaceResumeIdRoute,
   WorkspaceJobsIndexRoute: WorkspaceJobsIndexRoute,
+  WorkspaceResumeIndexRoute: WorkspaceResumeIndexRoute,
 }
 
 const WorkspaceRouteWithChildren = WorkspaceRoute._addFileChildren(
